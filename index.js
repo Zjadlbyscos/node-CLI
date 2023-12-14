@@ -1,3 +1,3 @@
-const { listContacts, getContactById, removeContact, addContact } = require('./db/contacts');
+const { listContacts, getContactById, removeContact, addContact,getContacts } = require('./db/contacts');
 
 //npm run start:dev
