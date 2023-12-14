@@ -11,11 +11,10 @@ function listContacts() {
 	const contacts = getContacts();
 
 	for (const contact of contacts) {
-		console.log(contact);
+		console.table(contact);
 	}
 }
 
-// console.log(listContacts())
 
 function getContactById(contactId) {
 	const contacts = getContacts();
@@ -28,8 +27,6 @@ function getContactById(contactId) {
 	}
 	return contact;
 }
-
-// console.log(getContactById("1"));
 
 function removeContact(contactId) {
 	let contacts = getContacts();
@@ -49,42 +46,34 @@ function removeContact(contactId) {
 	}
 }
 
-// removeContact('3');
-// console.log(listContacts());
 
 function addContact(name, email, phone) {
-
 	const contact = {
 		id: Date.now(),
 		name,
 		email,
 		phone
 	};
-
-
 	fs.readFile(contactsPath, 'utf8', (err, contacts) => {
 		if (err) {
 			console.log(err);
 			return;
 		}
-
-		
 		const contactsObject = JSON.parse(contacts);
-
-		
 		contactsObject.push(contact);
-
-		
-		fs.writeFile(contactsPath, JSON.stringify(contactsObject), (err) => {
+		fs.writeFile(contactsPath, JSON.stringify(contactsObject, null, 2), (err) => {
 			if (err) {
 				console.log(err);
 				return;
 			}
+          
 		});
+    
 	});
+ 
 }
-// addContact('zuza','zuza@getMaxListeners.com','604604606')
-console.log(listContacts());
+//  addContact('zuza','zuza@getMaxListeners.com','604604606')
+// console.log(listContacts());
 
 module.exports = {
 	getContacts,
