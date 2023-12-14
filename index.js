@@ -1,3 +1,3 @@
-console.log('hello world test ! ')
-console.log('hello world test ! ')
+const { listContacts, getContactById, removeContact, addContact } = require('./db/contacts');
+
 //npm run start:dev
