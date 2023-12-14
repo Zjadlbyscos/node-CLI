@@ -1,84 +1,59 @@
 const fs = require('fs');
 const path = require('path');
 const contactsPath = path.join(__dirname, 'contacts.json');
-// const contactsPath = path.join(__dirname, 'db', 'contacts.json');
 
-
-
-
-
+function getContacts() {
+	const contacts = fs.readFileSync(contactsPath, 'utf8');
+	return JSON.parse(contacts);
+}
 
 function listContacts() {
-	// Otwórz plik i odczytaj jego zawartość
-	fs.readFile(contactsPath, 'utf8', (err, contacts) => {
-		if (err) {
-			console.log(err);
-			return;
-		}
-		const contactsObject = JSON.parse(contacts);
+	const contacts = getContacts();
 
-		// Wyświetl listę kontaktów
-		for (const contact of contactsObject) {
-			console.log(contact);
-		}
-	});
+	for (const contact of contacts) {
+		console.log(contact);
+	}
 }
 
 // console.log(listContacts())
 
 function getContactById(contactId) {
-	// Otwórz plik i odczytaj jego zawartość
-	fs.readFile(contactsPath, 'utf8', (err, contacts) => {
-		if (err) {
-			console.log(err);
-			return;
-		}
-		const contactsObject = JSON.parse(contacts);
+	const contacts = getContacts();
 
-		const contact = contactsObject.find((contact) => contact.id === contactId);
-		if (contact) {
-			console.log(contact);
-		} else {
-			console.log('Contact not found');
-		}
-	});
+	const contact = contacts.find((contact) => contact.id === contactId);
+	if (contact) {
+		console.log(contact);
+	} else {
+		console.log('Contact not found');
+	}
+	return contact;
 }
+
 // console.log(getContactById("1"));
 
-
-
-
-
-
 function removeContact(contactId) {
-	// Otwórz plik i odczytaj jego zawartość
-	fs.readFile(contactsPath, 'utf8', (err, contacts) => {
-		if (err) {
-			console.log(err);
-			return;
-		}
+	let contacts = getContacts();
+	const contactIndex = contacts.findIndex((contact) => contact.id === contactId);
 
-		// Konwertuj zawartość pliku na obiekt JSON
-		const contactsObject = JSON.parse(contacts);
+	if (contactIndex !== -1) {
+		contacts.splice(contactIndex, 1);
 
-		// Znajdź kontakt o podanym identyfikatorze
-		const contactToRemove = contactsObject.find((contact) => contact.id === contactId);
-
-		// Usuń kontakt z obiektu
-		contactsObject.splice(contactsObject.indexOf(contactToRemove), 1);
-
-		// Zapisz nową zawartość pliku
-		fs.writeFile(contactsPath, JSON.stringify(contactsObject), (err) => {
+		fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2), (err) => {
 			if (err) {
-				console.log(err);
+				console.error('Error writing contacts file:', err);
 				return;
 			}
 		});
-	});
+	} else {
+		console.log('Contact not found');
+	}
 }
 
+// removeContact('3');
+// console.log(listContacts());
+
 function addContact(name, email, phone) {
-	// Utwórz nowy obiekt kontakt
+
 	const contact = {
 		id: Date.now(),
 		name,
@@ -86,20 +61,20 @@ function addContact(name, email, phone) {
 		phone
 	};
 
-	// Otwórz plik i odczytaj jego zawartość
+
 	fs.readFile(contactsPath, 'utf8', (err, contacts) => {
 		if (err) {
 			console.log(err);
 			return;
 		}
 
-		// Konwertuj zawartość pliku na obiekt JSON
+		
 		const contactsObject = JSON.parse(contacts);
 
-		// Dodaj nowy kontakt do obiektu
+		
 		contactsObject.push(contact);
 
-		// Zapisz nową zawartość pliku
+		
 		fs.writeFile(contactsPath, JSON.stringify(contactsObject), (err) => {
 			if (err) {
 				console.log(err);
@@ -108,8 +83,11 @@ function addContact(name, email, phone) {
 		});
 	});
 }
+// addContact('zuza','zuza@getMaxListeners.com','604604606')
+console.log(listContacts());
 
 module.exports = {
+	getContacts,
 	listContacts,
 	getContactById,
 	removeContact,
