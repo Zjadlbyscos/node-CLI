@@ -3,6 +3,11 @@ const path = require('path');
 const contactsPath = path.join(__dirname, 'contacts.json');
 // const contactsPath = path.join(__dirname, 'db', 'contacts.json');
 
+
+
+
+
+
 function listContacts() {
 	// Otwórz plik i odczytaj jego zawartość
 	fs.readFile(contactsPath, 'utf8', (err, contacts) => {
@@ -10,8 +15,6 @@ function listContacts() {
 			console.log(err);
 			return;
 		}
-
-		// Konwertuj zawartość pliku na obiekt JSON
 		const contactsObject = JSON.parse(contacts);
 
 		// Wyświetl listę kontaktów
@@ -30,17 +33,22 @@ function getContactById(contactId) {
 			console.log(err);
 			return;
 		}
-
-		// Konwertuj zawartość pliku na obiekt JSON
 		const contactsObject = JSON.parse(contacts);
 
-		// Znajdź kontakt o podanym identyfikatorze
 		const contact = contactsObject.find((contact) => contact.id === contactId);
-
-		// Zwróc kontakt
-		return contact;
+		if (contact) {
+			console.log(contact);
+		} else {
+			console.log('Contact not found');
+		}
 	});
 }
+// console.log(getContactById("1"));
+
+
+
+
+
 
 function removeContact(contactId) {
 	// Otwórz plik i odczytaj jego zawartość
@@ -102,5 +110,8 @@ function addContact(name, email, phone) {
 }
 
 module.exports = {
-	listContacts,getContactById,removeContact,addContact
+	listContacts,
+	getContactById,
+	removeContact,
+	addContact
 };
