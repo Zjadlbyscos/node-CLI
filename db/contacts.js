@@ -9,19 +9,15 @@ function getContacts() {
 
 function listContacts() {
 	const contacts = getContacts();
-
-	for (const contact of contacts) {
-		console.table(contact);
-	}
+	console.table(contacts);
 }
-
 
 function getContactById(contactId) {
 	const contacts = getContacts();
 
 	const contact = contacts.find((contact) => contact.id === contactId);
 	if (contact) {
-		console.log(contact);
+		console.table(contact);
 	} else {
 		console.log('Contact not found');
 	}
@@ -40,12 +36,12 @@ function removeContact(contactId) {
 				console.error('Error writing contacts file:', err);
 				return;
 			}
+			console.log('Contact removed successfully.');
 		});
 	} else {
 		console.log('Contact not found');
 	}
 }
-
 
 function addContact(name, email, phone) {
 	const contact = {
@@ -66,14 +62,10 @@ function addContact(name, email, phone) {
 				console.log(err);
 				return;
 			}
-          
+			console.log('Contact added successfully.');
 		});
-    
 	});
- 
 }
-//  addContact('zuza','zuza@getMaxListeners.com','604604606')
-// console.log(listContacts());
 
 module.exports = {
 	getContacts,
